@@ -2,15 +2,13 @@ import { Avatar, IconButton } from "@material-ui/core";
 import { Chat, DonutLarge, MoreVert, SearchOutlined } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import db from "../../firebase";
+import { useStateValue } from "../../StateProvider";
 import SidebarChat from "../SidebarChat";
 import "./styles.css";
 
 export default function Sidebar() {
-  const [seed, setSeed] = useState("");
   const [rooms, setRooms] = useState([]);
-  useEffect(() => {
-    setSeed(Math.floor(Math.random() * 5000));
-  }, []);
+  const [{ user }] = useStateValue();
 
   useEffect(() => {
     const unsubcribe = db.collection("rooms").onSnapshot((snapshot) =>
@@ -29,7 +27,7 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar__header">
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar src={user?.photoURL}/>
         <div className="sidebar__headerRight">
           <IconButton>
             <DonutLarge />
